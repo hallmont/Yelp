@@ -248,37 +248,8 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="DealCell" rowHeight="47" id="MjJ-c3-oOz" userLabel="DealCell" customClass="DealCell" customModule="Yelp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="45" width="320" height="47"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="MjJ-c3-oOz" id="lAF-a8-9rr">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="47"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Offering a Deal" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pgl-on-VR8">
-                                                    <rect key="frame" x="14" y="11" width="222" height="21"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Nes-Z4-Kqe">
-                                                    <rect key="frame" x="258" y="8" width="51" height="31"/>
-                                                </switch>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstAttribute="trailing" secondItem="Nes-Z4-Kqe" secondAttribute="trailing" constant="13" id="ToS-lt-gtL"/>
-                                                <constraint firstItem="pgl-on-VR8" firstAttribute="leading" secondItem="lAF-a8-9rr" secondAttribute="leading" constant="14" id="VIV-N3-SOb"/>
-                                                <constraint firstItem="Nes-Z4-Kqe" firstAttribute="centerY" secondItem="lAF-a8-9rr" secondAttribute="centerY" id="pVK-xm-Vfg"/>
-                                                <constraint firstItem="pgl-on-VR8" firstAttribute="centerY" secondItem="lAF-a8-9rr" secondAttribute="centerY" id="pVv-6J-Af3"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <connections>
-                                            <outlet property="onSwitch" destination="Nes-Z4-Kqe" id="rbA-cn-mF2"/>
-                                            <outlet property="switchLabel" destination="pgl-on-VR8" id="Pp8-4T-xN5"/>
-                                        </connections>
-                                    </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CheckBoxCell" rowHeight="46" id="yPA-b1-ulj" userLabel="CheckBoxCell" customClass="CheckBoxCell" customModule="Yelp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="92" width="320" height="46"/>
+                                        <rect key="frame" x="0.0" y="45" width="320" height="46"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="yPA-b1-ulj" id="fZZ-IT-cfK">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="46"/>
@@ -307,7 +278,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SwitchCell" rowHeight="44" id="NIH-rl-9Cg" customClass="SwitchCell" customModule="Yelp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="138" width="320" height="44"/>
+                                        <rect key="frame" x="0.0" y="91" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="NIH-rl-9Cg" id="eyt-LR-20S">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -336,14 +307,14 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SeeAllCell" rowHeight="33" id="oGd-Zt-0x4">
-                                        <rect key="frame" x="0.0" y="182" width="320" height="33"/>
+                                        <rect key="frame" x="0.0" y="135" width="320" height="33"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="oGd-Zt-0x4" id="I1T-pM-X6d">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="33"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="See All" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="byE-Uj-0tn">
-                                                    <rect key="frame" x="135.5" y="7.5" width="50" height="19.5"/>
+                                                    <rect key="frame" x="135.5" y="6.5" width="50" height="19.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
