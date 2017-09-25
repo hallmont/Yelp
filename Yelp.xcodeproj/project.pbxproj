@@ -21,9 +21,7 @@
 		7070AA011F7872D00061E522 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7070AA001F7872D00061E522 /* DetailViewController.swift */; };
 		70D8F1371F745440002567E4 /* SwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D8F1361F745440002567E4 /* SwitchCell.swift */; };
 		70D8F1391F74CB5B002567E4 /* FiltersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D8F1381F74CB5B002567E4 /* FiltersViewController.swift */; };
-		70D8F13B1F76269E002567E4 /* DistanceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D8F13A1F76269E002567E4 /* DistanceCell.swift */; };
 		70D8F13D1F7626C0002567E4 /* CheckBoxCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D8F13C1F7626C0002567E4 /* CheckBoxCell.swift */; };
-		70D8F1411F76468E002567E4 /* DealCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D8F1401F76468E002567E4 /* DealCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,9 +53,7 @@
 		7070AA001F7872D00061E522 /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		70D8F1361F745440002567E4 /* SwitchCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwitchCell.swift; sourceTree = "<group>"; };
 		70D8F1381F74CB5B002567E4 /* FiltersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FiltersViewController.swift; sourceTree = "<group>"; };
-		70D8F13A1F76269E002567E4 /* DistanceCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DistanceCell.swift; sourceTree = "<group>"; };
 		70D8F13C1F7626C0002567E4 /* CheckBoxCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckBoxCell.swift; sourceTree = "<group>"; };
-		70D8F1401F76468E002567E4 /* DealCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DealCell.swift; sourceTree = "<group>"; };
 		883322706A784248B16F444A /* Pods-Yelp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Yelp.release.xcconfig"; path = "Pods/Target Support Files/Pods-Yelp/Pods-Yelp.release.xcconfig"; sourceTree = "<group>"; };
 		9B128C050DE78660DE2A8E75 /* Pods-YelpTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YelpTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-YelpTests/Pods-YelpTests.release.xcconfig"; sourceTree = "<group>"; };
 		AA3C5CF4FD317D72ABE2AAC4 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -187,9 +183,7 @@
 			children = (
 				7058D7361F724F83001F9201 /* BusinessCell.swift */,
 				70D8F1361F745440002567E4 /* SwitchCell.swift */,
-				70D8F13A1F76269E002567E4 /* DistanceCell.swift */,
 				70D8F13C1F7626C0002567E4 /* CheckBoxCell.swift */,
-				70D8F1401F76468E002567E4 /* DealCell.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -409,12 +403,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				70D8F13B1F76269E002567E4 /* DistanceCell.swift in Sources */,
 				70D8F13D1F7626C0002567E4 /* CheckBoxCell.swift in Sources */,
 				7058D7371F724F83001F9201 /* BusinessCell.swift in Sources */,
 				7070AA011F7872D00061E522 /* DetailViewController.swift in Sources */,
 				22AAAA9C1AEA1EC300A544AF /* BusinessesViewController.swift in Sources */,
-				70D8F1411F76468E002567E4 /* DealCell.swift in Sources */,
 				70D8F1391F74CB5B002567E4 /* FiltersViewController.swift in Sources */,
 				22AAAA991AEA0A9700A544AF /* Business.swift in Sources */,
 				222D8A7D19CCFAE000D2DB53 /* YelpClient.swift in Sources */,

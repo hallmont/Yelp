@@ -11,7 +11,7 @@ The following **required** functionality is completed:
 - [x] Search results page
    - [x] Table rows should be dynamic height according to the content height.
    - [x] Custom cells should have the proper Auto Layout constraints.
-   - [x] Search bar should be in the navigation bar (doesn't have to expand to show location like the real Yelp app does). --Partial--
+   - [x] Search bar should be in the navigation bar (doesn't have to expand to show location like the real Yelp app does).
 - [x] Filter page. Unfortunately, not all the filters are supported in the Yelp API.
    - [x] The filters you should actually have are: category, sort (best match, distance, highest rated), distance, deals (on/off).
    - [x] The filters table should be organized into sections as in the mock.
@@ -21,7 +21,7 @@ The following **required** functionality is completed:
 The following **optional** features are implemented:
 
 - [x] Search results page
-   - [x] Infinite scroll for restaurant results. --Partial--
+   - [x] Infinite scroll for restaurant results.
    - [x] Implement map view of restaurant results.
 - [x] Filter page
    - [ ] Implement a custom switch instead of the default UISwitch.

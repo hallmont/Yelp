@@ -9,14 +9,18 @@
 import UIKit
 import MapKit
 
-class BusinessesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, FiltersViewControllerDelegate, UIScrollViewDelegate {
+class BusinessesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, FiltersViewControllerDelegate, UIScrollViewDelegate, UISearchBarDelegate {
     
+    let kPageSize = 20
     var businesses: [Business]!
+    var total: Int = 0
+    var currentPage: Int = 1
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var mapBarButton: UIBarButtonItem!
     var mapRefreshNeeded: Bool = true
+    var searchFilters = SearchFilters()
     
     var isMoreDataLoading = false
     var loadingMoreView:InfiniteScrollActivityView?
@@ -30,10 +34,10 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
         tableView.estimatedRowHeight = 120
         
         mapView.isHidden = true
-
         
         // Add search bar
         var searchBar = UISearchBar()
+        searchBar.delegate = self
         searchBar.sizeToFit()
         navigationItem.titleView = searchBar
         
@@ -54,20 +58,26 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
         
         //searchDisplayController?.displaysSearchBarInNavigationBar = true
         
-        Business.searchWithTerm(term: "Restaurants", completion: { (businesses: [Business]?, error: Error?) -> Void in
+        fetchData(loadNextPage: false)
+        
+        /*
+        Business.searchWithTerm(term: "Restaurants", completion: { (businesses: [Business]?, total: Int?, error: Error?) -> Void in
             
             self.businesses = businesses
+            self.total = total
             self.tableView.reloadData()
             
+         
             if let businesses = businesses {
                 for business in businesses {
                     print(business.name!)
                     print(business.address!)
                 }
             }
+         
             
             }
-        )
+        )*/
         
         /* Example of Yelp search with more search options specified
          Business.searchWithTerm("Restaurants", sort: .Distance, categories: ["asianfusion", "burgers"], deals: true) { (businesses: [Business]!, error: NSError!) -> Void in
@@ -81,7 +91,21 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
          */
         
     }
+
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        //print( "Search bar text:", searchText )
+    }
     
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        //do something
+        searchBar.resignFirstResponder() //hide keyboard
+        print( "<ENTER>/Search button clicked: \(searchBar.text)")
+        if let text = searchBar.text {
+            searchFilters.term = text
+            fetchData(loadNextPage: false)
+        }
+    }
+
     func goToLocation(location: CLLocation) {
         let span = MKCoordinateSpanMake(0.1, 0.1)
         let region = MKCoordinateRegionMake(location.coordinate, span)
@@ -169,7 +193,7 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     func loadMoreData() {
-        // ...
+        fetchData(loadNextPage: true)
     }
     
     
@@ -182,6 +206,8 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
             let filtersViewController = navigationController.topViewController as! FiltersViewController
             
             filtersViewController.delegate = self
+            filtersViewController.searchFilters = searchFilters
+            print( "** segue: searchFilters.hasDeal=\(searchFilters.hasDeal)")
         } else if (segue.identifier == "BusinessCell") {
             let cell = sender as! UITableViewCell
             var indexPath: IndexPath?
@@ -191,6 +217,81 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
             let detailViewController = segue.destination as! DetailViewController
             detailViewController.business = businesses![ indexPath!.row ]
         }
+    }
+    
+    func filtersViewController(
+        filtersViewController: FiltersViewController,
+        distance: Int,
+        sortBy: Int,
+        hasDeal: Bool,
+        switchStates: [Int : Bool])
+    {
+        searchFilters.hasDeal = hasDeal
+        searchFilters.sortBy = sortBy
+        searchFilters.distance = distance
+        searchFilters.switchStates = switchStates
+        searchFilters.updateSelectedCategories()
+
+        fetchData( loadNextPage: false )
+    }
+    
+    
+    func fetchData( loadNextPage: Bool )
+    {
+        var offset: Int = 0
+        
+        if loadNextPage {
+            print( "** JTN: loadNextPage: currentPage=\(currentPage)")
+            offset = kPageSize * currentPage
+            currentPage += 1
+        } else {
+            offset = 0
+        }
+        
+        Business.searchWithTerm(
+            term: searchFilters.term,
+            sort: YelpSortMode(rawValue: sortByList[searchFilters.sortBy]["code"] as! Int),
+            categories: searchFilters.selectedCategories,
+            deals: searchFilters.hasDeal,
+            distance: distances[searchFilters.distance]["meter_value"] as! Int,
+            offset: offset )
+            
+        { (businesses: [Business]?, total: Int?, error: Error?) -> Void in
+            
+            print( "** JTN: total=\(total)" )
+
+            if loadNextPage {
+                if businesses!.count >= self.total {
+                    //return
+                }
+                for business in businesses! {
+                    self.businesses!.append( business )
+                    print( "** JTN: in loop businesses!.count=\(businesses!.count)")
+                }
+                
+            } else {
+                if let total = total {
+                    self.total = total
+                    self.currentPage = 1
+                    self.businesses = businesses
+
+                } else {
+                    self.total = 0
+                }
+            }
+            
+            print( "** JTN: businesses!.count=\(businesses!.count)")
+            
+            self.tableView.reloadData()
+            self.mapRefreshNeeded = true
+            let allAnnotations = self.mapView.annotations
+            self.mapView.removeAnnotations(allAnnotations)
+            
+            if( !self.mapView.isHidden ) {
+                self.addLocationsToMap()
+            }
+        }
+
     }
     
     @IBAction func mapButtonSelected(_ sender: Any) {
@@ -204,41 +305,6 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
             tableView.isHidden = false
             mapBarButton.title = "Map"
         }
-    }
-    
-    func filtersViewController(
-        filtersViewController: FiltersViewController,
-        distanceInMeters: Int,
-        sortByValue: Int,
-        hasDeal: Bool,
-        didUpdateFilters filters: [String : AnyObject])
-    {
-        
-        var categories = filters["categories"] as? [String]
-        
-        print( "** distanceInMeters=\(distanceInMeters)")
-
-        Business.searchWithTerm(
-            term: "Restaurants",
-            sort: YelpSortMode(rawValue: sortByValue),
-            categories: categories,
-            deals: hasDeal,
-            distance: distanceInMeters )
-        
-        { (businesses: [Business]?, error: Error?) -> Void in
-            
-            self.businesses = businesses
-            self.tableView.reloadData()
-            
-            self.mapRefreshNeeded = true
-            let allAnnotations = self.mapView.annotations
-            self.mapView.removeAnnotations(allAnnotations)
-            
-            if( !self.mapView.isHidden ) {
-                self.addLocationsToMap()
-            }
-        }
-
     }
     
 }

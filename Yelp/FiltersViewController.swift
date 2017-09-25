@@ -11,10 +11,10 @@ import UIKit
 @objc protocol FiltersViewControllerDelegate {
     @objc optional func filtersViewController(
         filtersViewController: FiltersViewController,
-        distanceInMeters: Int,
-        sortByValue: Int,
+        distance: Int,
+        sortBy: Int,
         hasDeal: Bool,
-        didUpdateFilters filters: [String:AnyObject])
+        switchStates: [Int:Bool])
 }
 
 enum FiltersViewModelItemType {
@@ -34,13 +34,33 @@ protocol FiltersViewModelItem {
     var partialCountToShow: Int { get }
 }
 
+
+class SearchFilters {
+    var sortBy: Int = 0
+    var hasDeal: Bool = false
+    var distance: Int = 0
+    var switchStates = [Int:Bool]()
+    var selectedCategories = [String]()
+    var term: String = "Restaurants"
+    
+    func updateSelectedCategories()
+    {
+        selectedCategories = [String]()
+        
+        for (row, isSelected) in switchStates {
+            if isSelected {
+                selectedCategories.append(categories[row]["code"]!)
+            }
+        }
+    }
+}
+
 class FiltersViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, SwitchCellDelegate {
 
     @IBOutlet weak var tableView: UITableView!
-    weak var delegate: FiltersViewControllerDelegate?
+    var delegate: FiltersViewControllerDelegate?
+    var searchFilters: SearchFilters!
 
-    var switchStates = [Int:Bool]()
-    var hasDeal = false
     var items = [FiltersViewModelItem]()
     
     let sortByItem = FiltersViewModelSortByItem()
@@ -51,6 +71,9 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
         
         tableView.delegate = self
         tableView.dataSource = self
+        
+        distanceItem.selectedRow = searchFilters.distance
+        sortByItem.selectedRow = searchFilters.sortBy
     
         let mostPopularItem = FiltersViewModelMostPopularItem()
         items.append(mostPopularItem)
@@ -73,28 +96,13 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     
     @IBAction func searchButtonClicked(_ sender: Any) {
-        var filters = [String : AnyObject]()
-        var selectedCategories = [String]()
-        for (row, isSelected) in switchStates {
-            if isSelected {
-                print( "** row=\(row), code=\(categories[row]["code"])")
-                selectedCategories.append(categories[row]["code"]!)
-            }
-        }
-        
-        if( selectedCategories.count > 0 ) {
-            filters["categories"] = selectedCategories as AnyObject
-        }
-        
-        print( "sortyByItem.selectedRow=\(sortByItem.selectedRow)")
-        print( "distanceItem.selectedRow=\(distanceItem.selectedRow)")
-        
-        delegate?.filtersViewController?(
+
+        delegate!.filtersViewController!(
             filtersViewController: self,
-            distanceInMeters: distances[distanceItem.selectedRow]["meter_value"] as! Int,
-            sortByValue: sortByList[sortByItem.selectedRow]["code"] as! Int,
-            hasDeal: hasDeal,
-            didUpdateFilters: filters)
+            distance: distanceItem.selectedRow,
+            sortBy: sortByItem.selectedRow,
+            hasDeal: searchFilters.hasDeal,
+            switchStates: searchFilters.switchStates)
         
         dismiss(animated: true, completion: nil)
     }
@@ -114,8 +122,6 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
         var item = items[indexPath.section]
-      
-        print( "** didSelectRowAt: section=\(indexPath.section) row=\(indexPath.row) showPartial=\(item.showPartial) isCollapsed=\(item.isCollapsed)")
         
         if( item.isCollapsed ) {
             item.isCollapsed = false
@@ -162,14 +168,14 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
             if cellType == "" {
                 cellType = "SwitchCell"
             
-                print( "** cellForRowAt 2 (before): section=\(indexPath.section) row=\(row)")
+                //print( "** cellForRowAt 2 (before): section=\(indexPath.section) row=\(row)")
                 if let cell = tableView.dequeueReusableCell(withIdentifier: cellType, for: indexPath) as? SwitchCell {
                     
-                    print( "** cellForRowAt 2: section=\(indexPath.section) row=\(row)")
+                    //print( "** cellForRowAt 2: section=\(indexPath.section) row=\(row)")
                     
                     cell.switchLabel.text = categories[row]["name"]
                     cell.delegate = self
-                    cell.onSwitch.isOn = switchStates[row] ?? false
+                    cell.onSwitch.isOn = searchFilters.switchStates[row] ?? false
      
                     //cell.item = item
                     return cell
@@ -183,7 +189,7 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
         case .popular:
             if let cell = tableView.dequeueReusableCell(withIdentifier: "SwitchCell", for: indexPath) as? SwitchCell {
                 cell.switchLabel.text = popularList[row]["name"] as! String
-                cell.onSwitch.isOn = hasDeal
+                cell.onSwitch.isOn = searchFilters.hasDeal
                 cell.delegate = self
                 return cell
             }
@@ -215,12 +221,12 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
         
         let item = items[indexPath.section]
         if item.type == .category {
-            switchStates[indexPath.row] = value
+            searchFilters.switchStates[indexPath.row] = value
         } else if item.type == .popular {
-            hasDeal = value
+            searchFilters.hasDeal = value
         }
         
-        print( "filters view got switch event: section=\(indexPath.section) row=\(indexPath.row)" )
+        //print( "filters view got switch event: section=\(indexPath.section) row=\(indexPath.row)" )
     }
 
 
