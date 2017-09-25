@@ -11,13 +11,17 @@ import UIKit
 class Business: NSObject {
     let name: String?
     let address: String?
+    let phone: String?
     let imageURL: URL?
     let categories: String?
     let distance: String?
     let ratingImageURL: URL?
     let reviewCount: NSNumber?
+    let snippetImageURL: URL?
+    let snippetText: String?
     
     init(dictionary: NSDictionary) {
+        // print( dictionary )
         name = dictionary["name"] as? String
         
         let imageURLString = dictionary["image_url"] as? String
@@ -72,6 +76,15 @@ class Business: NSObject {
             ratingImageURL = nil
         }
         
+        let snippetImageURLString = dictionary["snippet_image_url"] as? String
+        if snippetImageURLString != nil {
+            snippetImageURL = URL(string: snippetImageURLString!)
+        } else {
+            snippetImageURL = nil
+        }
+        
+        phone = dictionary["display_phone"] as? String
+        snippetText = dictionary["snippet_text"] as? String
         reviewCount = dictionary["review_count"] as? NSNumber
     }
     
@@ -88,7 +101,7 @@ class Business: NSObject {
         _ = YelpClient.sharedInstance.searchWithTerm(term, completion: completion)
     }
     
-    class func searchWithTerm(term: String, sort: YelpSortMode?, categories: [String]?, deals: Bool?, completion: @escaping ([Business]?, Error?) -> Void) -> Void {
-        _ = YelpClient.sharedInstance.searchWithTerm(term, sort: sort, categories: categories, deals: deals, completion: completion)
+    class func searchWithTerm(term: String, sort: YelpSortMode?, categories: [String]?, deals: Bool?, distance: Int, completion: @escaping ([Business]?, Error?) -> Void) -> Void {
+        _ = YelpClient.sharedInstance.searchWithTerm(term, sort: sort, categories: categories, deals: deals, distance: distance,completion: completion)
     }
 }
