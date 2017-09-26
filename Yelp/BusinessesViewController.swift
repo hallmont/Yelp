@@ -243,7 +243,7 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
         if loadNextPage {
             print( "** JTN: loadNextPage: currentPage=\(currentPage)")
             offset = kPageSize * currentPage
-            currentPage += 1
+
         } else {
             offset = 0
         }
@@ -256,32 +256,34 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
             distance: distances[searchFilters.distance]["meter_value"] as! Int,
             offset: offset )
             
-        { (businesses: [Business]?, total: Int?, error: Error?) -> Void in
+        { (businesses2: [Business]?, total: Int?, error: Error?) -> Void in
             
             print( "** JTN: total=\(total)" )
 
             if loadNextPage {
-                if businesses!.count >= self.total {
-                    //return
+                if self.businesses.count >= self.total {
+                    self.loadingMoreView!.stopAnimating()
+                    return
                 }
-                for business in businesses! {
-                    self.businesses!.append( business )
-                    print( "** JTN: in loop businesses!.count=\(businesses!.count)")
+                for business in businesses2! {
+                    self.businesses.append( business )
+                    //print( "** JTN: in loop name=[\(business.name)] businesses.count=\(self.businesses.count)")
                 }
+                self.currentPage += 1
                 
             } else {
                 if let total = total {
                     self.total = total
                     self.currentPage = 1
-                    self.businesses = businesses
+                    self.businesses = businesses2!
 
                 } else {
                     self.total = 0
                 }
             }
             
-            print( "** JTN: businesses!.count=\(businesses!.count)")
-            
+            print( "** JTN: businesses.count = \(self.businesses.count) businesses2!.count=\(businesses2!.count)")
+            self.isMoreDataLoading = false
             self.tableView.reloadData()
             self.mapRefreshNeeded = true
             let allAnnotations = self.mapView.annotations
