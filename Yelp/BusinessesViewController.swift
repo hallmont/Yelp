@@ -59,37 +59,6 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
         //searchDisplayController?.displaysSearchBarInNavigationBar = true
         
         fetchData(loadNextPage: false)
-        
-        /*
-        Business.searchWithTerm(term: "Restaurants", completion: { (businesses: [Business]?, total: Int?, error: Error?) -> Void in
-            
-            self.businesses = businesses
-            self.total = total
-            self.tableView.reloadData()
-            
-         
-            if let businesses = businesses {
-                for business in businesses {
-                    print(business.name!)
-                    print(business.address!)
-                }
-            }
-         
-            
-            }
-        )*/
-        
-        /* Example of Yelp search with more search options specified
-         Business.searchWithTerm("Restaurants", sort: .Distance, categories: ["asianfusion", "burgers"], deals: true) { (businesses: [Business]!, error: NSError!) -> Void in
-         self.businesses = businesses
-         
-         for business in businesses {
-         print(business.name!)
-         print(business.address!)
-         }
-         }
-         */
-        
     }
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
@@ -154,7 +123,6 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if businesses != nil {
-            print( "** businesses.count = \(businesses!.count)")
             return businesses!.count
         } else {
             return 0
@@ -170,7 +138,6 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        // print( "** scrollViewDidScroll()")
         
         if (!isMoreDataLoading) {
             // Calculate the position of one screen length before the bottom of the results
@@ -207,7 +174,6 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
             
             filtersViewController.delegate = self
             filtersViewController.searchFilters = searchFilters
-            print( "** segue: searchFilters.hasDeal=\(searchFilters.hasDeal)")
         } else if (segue.identifier == "BusinessCell") {
             let cell = sender as! UITableViewCell
             var indexPath: IndexPath?
@@ -241,7 +207,6 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
         var offset: Int = 0
         
         if loadNextPage {
-            print( "** JTN: loadNextPage: currentPage=\(currentPage)")
             offset = kPageSize * currentPage
 
         } else {
@@ -258,8 +223,6 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
             
         { (businesses2: [Business]?, total: Int?, error: Error?) -> Void in
             
-            print( "** JTN: total=\(total)" )
-
             if loadNextPage {
                 if self.businesses.count >= self.total {
                     self.loadingMoreView!.stopAnimating()
@@ -282,7 +245,6 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
                 }
             }
             
-            print( "** JTN: businesses.count = \(self.businesses.count) businesses2!.count=\(businesses2!.count)")
             self.isMoreDataLoading = false
             self.tableView.reloadData()
             self.mapRefreshNeeded = true

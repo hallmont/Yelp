@@ -24,14 +24,6 @@ class DetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print( "name=\(business.name)" )
-        print( "address=\(business.address)" )
-        print( "categories=\(business.categories)" )
-        print( "distance=\(business.distance)" )
-        print( "reviewCount=\(business.reviewCount)" )
-        print( "phone=\(business.phone)" )
-        print( "snippetText=\(business.snippetText)" )
-
         nameLabel.text = business.name!
         addressLabel.text = business.address!
         phoneLabel.text = business.phone!
@@ -46,16 +38,4 @@ class DetailViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

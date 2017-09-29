@@ -148,7 +148,6 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
             }
         }
         
-        print( "** cellForRowAt: section=\(indexPath.section) row=\(indexPath.row) showPartial=\(item.showPartial) isCollapsed=\(item.isCollapsed) cellType=\(cellType)")
         var checkBoxStatus: CheckBoxStatusType
         var row: Int
         if item.isCollapsed {
@@ -168,10 +167,8 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
             if cellType == "" {
                 cellType = "SwitchCell"
             
-                //print( "** cellForRowAt 2 (before): section=\(indexPath.section) row=\(row)")
                 if let cell = tableView.dequeueReusableCell(withIdentifier: cellType, for: indexPath) as? SwitchCell {
                     
-                    //print( "** cellForRowAt 2: section=\(indexPath.section) row=\(row)")
                     
                     cell.switchLabel.text = categories[row]["name"]
                     cell.delegate = self
@@ -225,8 +222,6 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
         } else if item.type == .popular {
             searchFilters.hasDeal = value
         }
-        
-        //print( "filters view got switch event: section=\(indexPath.section) row=\(indexPath.row)" )
     }
 
 
